@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import com.standoff.bang.bang.model.Game
 import thirdparty.bindView
 
 class StartGameActivity: Activity() {

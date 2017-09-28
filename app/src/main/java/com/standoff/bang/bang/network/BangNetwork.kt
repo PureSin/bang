@@ -32,6 +32,7 @@ class BangNetwork {
     fun emit(event: Event) {
         when(event) {
             is joinGame -> ourSocket!!.emit("joinGame")
+            is actionChosen -> ourSocket!!.emit("actionChosen", event.action.toString())
         }
     }
 

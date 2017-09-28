@@ -3,6 +3,7 @@ package com.standoff.bang.bang;
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -13,6 +14,10 @@ import android.widget.TextView
 import com.standoff.bang.bang.moves.MovementTracker
 import thirdparty.bindView
 import android.os.CountDownTimer
+import com.standoff.bang.bang.model.Action
+import com.standoff.bang.bang.model.actionChosen
+import com.standoff.bang.bang.model.roundResult
+import com.standoff.bang.bang.model.startGame
 import com.standoff.bang.bang.moves.GameAction
 
 
@@ -21,12 +26,18 @@ class GameActivity : Activity(){
     var fadeOut: Animation? = null
 
     val actionTextView: TextView? by bindView(R.id.action_text_view)
+    val lives: TextView? by bindView(R.id.lives)
+    val bullets: TextView? by bindView(R.id.bullets)
     val progressBar: ProgressBar? by bindView(R.id.timer)
     var action: GameAction? = null
     var timer: TimerWithProgressBar? = null
 
+    var app:BangApplication? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        app = application as BangApplication
 
         setContentView(R.layout.submit_action)
         fadeOut = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
@@ -47,14 +58,25 @@ class GameActivity : Activity(){
         MovementTracker.init()
         actionTextView!!.startAnimation(fadeOut)
 
+
         timer = TimerWithProgressBar(progressBar!!, this)
     }
 
+    fun listenForResult() {
+        app!!.network.getEvents().subscribe { event ->
+            when(event) {
+                is roundResult -> showResult(event)
+            }
+        }
+    }
+
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        val action = MovementTracker.processEvent(event!!)
+        action = MovementTracker.processEvent(event!!)
         if (action != null) {
             actionTextView!!.visibility = View.VISIBLE
-            actionTextView!!.text = "Action: " + action.name
+            actionTextView!!.text = "Action: " + action!!.name
+
+            playMove()
         }
         return super.onTouchEvent(event)
     }
@@ -63,12 +85,39 @@ class GameActivity : Activity(){
         timer!!.start()
     }
 
-    fun resetTimer() {
-        timer!!.reset()
-    }
 
     fun playMove() {
-        // send the action to server
+        if (action != null) {
+            val finalAction = if (action == GameAction.SHOOT) {
+                Action.SHOOT
+            } else if (action == GameAction.BLOCK){
+                Action.DEFEND
+            } else {
+                Action.RELOAD
+            }
+
+            app!!.network.emit(actionChosen(app!!.game!!.player.name, finalAction))
+        }
+    }
+
+    fun showResult(result: roundResult) {
+        val outcome =
+                if (result.oppAction == Action.SHOOT && result.yourAction != Action.DEFEND) {
+            "You got shot."
+        } else if (result.yourAction == Action.SHOOT && result.oppAction != Action.DEFEND) {
+            "You shot your opponent."
+        } else {
+            "Everyone are alive :("
+        }
+
+        var  print = ""
+        print += outcome + "\n"
+        print += "Lives remaining: " + app!!.game!!.player.lives + "\n"
+        print += "Bullets remaining: " + app!!.game!!.player.bullets + "\n"
+
+
+
+        actionTextView!!.text = print
     }
 }
 
@@ -84,15 +133,11 @@ class TimerWithProgressBar(val bar: ProgressBar, val activity: GameActivity) {
         override fun onFinish() {
             i++
             bar.progress = 100
-            activity.playMove()
+//            activity.playMove()
         }
     }
 
     fun start() {
         countdown.start()
-    }
-
-    fun reset() {
-        countdown.cancel()
     }
 }
