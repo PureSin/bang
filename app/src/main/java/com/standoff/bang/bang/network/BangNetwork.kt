@@ -3,8 +3,15 @@ package com.standoff.bang.bang.network
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
+import com.standoff.bang.bang.model.Event
+import com.standoff.bang.bang.model.JoinGame
+import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.subscribers.DefaultSubscriber
 import org.json.JSONObject
-
+import org.reactivestreams.Subscriber
+import java.util.*
 
 
 /**
@@ -12,7 +19,7 @@ import org.json.JSONObject
  */
 class BangNetwork {
     companion object {
-        val SOCKET_URL: String = "http://chat.socket.io"
+        val SOCKET_URL: String = "http://100.119.18.110:3000/"
         private var ourInstance: BangNetwork? = null
         private var ourSocket: Socket? = null
 
@@ -23,27 +30,29 @@ class BangNetwork {
             }
             return ourInstance!!
         }
-
-        object ourListener : Emitter.Listener {
-            override fun call(vararg args: Any?) {
-                // pares information and emit events to any listeners
-                val data = args[0] as JSONObject
-                println(data)
-            }
-        }
     }
 
     fun connect() {
-        ourSocket!!.on("new message", ourListener)
         ourSocket!!.connect()
     }
 
     fun disconnect() {
         ourSocket!!.disconnect();
-        ourSocket!!.off("new message", ourListener);
     }
 
-    private fun emit() {
+    fun getEvents(): Observable<Event> {
+        return Observable.create { e: ObservableEmitter<Event> ->
+            e.onNext(JoinGame)
+            ourSocket!!.on("new message", { args ->
+                println(args)
+                val event = convertToEvent(args)
+                e.onNext(event)
+            })
+        }
+    }
+
+    private fun convertToEvent(args: Array<out Any>?): Event {
+        return JoinGame
     }
 
     fun isConnected(): Boolean {
