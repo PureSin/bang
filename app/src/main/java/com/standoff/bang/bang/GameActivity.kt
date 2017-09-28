@@ -14,6 +14,7 @@ import android.widget.TextView
 import com.standoff.bang.bang.moves.MovementTracker
 import thirdparty.bindView
 import android.os.CountDownTimer
+import android.widget.Toast
 import com.standoff.bang.bang.model.Action
 import com.standoff.bang.bang.model.actionChosen
 import com.standoff.bang.bang.model.roundResult
@@ -73,6 +74,12 @@ class GameActivity : Activity(){
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         action = MovementTracker.processEvent(event!!)
         if (action != null) {
+            if (action == GameAction.SHOOT && app!!.game!!.player.bullets == 0) {
+                Toast.makeText(this, "No bullets left.", Toast.LENGTH_SHORT)
+                return super.onTouchEvent(event)
+            }
+
+
             actionTextView!!.visibility = View.VISIBLE
             actionTextView!!.text = "Action: " + action!!.name
 
@@ -101,6 +108,12 @@ class GameActivity : Activity(){
     }
 
     fun showResult(result: roundResult) {
+        if (app!!.game!!.player.lives == 0) {
+            Toast.makeText(this, "Game over. Keep on practicing", Toast.LENGTH_LONG)
+
+        }
+
+
         val outcome =
                 if (result.oppAction == Action.SHOOT && result.yourAction != Action.DEFEND) {
             "You got shot."
@@ -111,13 +124,15 @@ class GameActivity : Activity(){
         }
 
         var  print = ""
-        print += outcome + "\n"
-        print += "Lives remaining: " + app!!.game!!.player.lives + "\n"
-        print += "Bullets remaining: " + app!!.game!!.player.bullets + "\n"
-
-
-
+        print += outcome + "\n Next round starting..."
         actionTextView!!.text = print
+
+        // update lives and bullets
+        lives!!.text = "Lives: " + app!!.game!!.player.lives
+        bullets!!.text = "Bullets: " + app!!.game!!.player.bullets
+
+        timer!!.reset()
+        timer!!.start()
     }
 }
 
@@ -139,5 +154,10 @@ class TimerWithProgressBar(val bar: ProgressBar, val activity: GameActivity) {
 
     fun start() {
         countdown.start()
+    }
+
+    fun reset() {
+        bar.progress = 0
+        countdown.cancel()
     }
 }
