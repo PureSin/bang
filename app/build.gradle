@@ -27,6 +27,13 @@ dependencies {
     androidTestImplementation ('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    
+    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.github.nkzawa:socket.io-client:0.3.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'com.android.support:support-compat:26.1.0'
+    implementation 'com.jakewharton.timber:timber:4.5.1'
 
     compile 'com.github.nkzawa:socket.io-client:0.3.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -34,6 +41,9 @@ dependencies {
     compile "io.reactivex.rxjava2:rxjava:2.1.4"
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     apply plugin: 'kotlin-android-extensions'
+
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
 }
 repositories {
     mavenCentral()
