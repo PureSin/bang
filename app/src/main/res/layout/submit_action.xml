@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@android:style/Theme.Holo.NoActionBar"
-    tools:context="com.example.kchq.myapplication.MainActivity"
     android:background="@drawable/ww_min"
     >
 
@@ -62,7 +61,6 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:fontFamily="@font/bungee_shade_2"
         android:gravity="center"
         android:text="Make your move!"
         android:textColor="@android:color/background_light"

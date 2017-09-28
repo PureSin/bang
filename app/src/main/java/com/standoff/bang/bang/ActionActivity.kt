@@ -1,24 +1,13 @@
 package com.standoff.bang.bang
 
 import android.app.Activity
-import android.graphics.Point
 import android.os.Bundle
-import android.support.v4.view.GestureDetectorCompat
-import android.support.v4.view.MotionEventCompat
-import android.util.Log
-import android.view.GestureDetector
 import android.view.MotionEvent
-
-import com.standoff.bang.bang.moves.MovementTracker
-
-import java.util.ArrayList
-
-import timber.log.Timber
-import android.widget.EditText
 import android.widget.TextView
-import butterknife.BindView
 import com.standoff.bang.bang.moves.GameAction
+import com.standoff.bang.bang.moves.MovementTracker
 import thirdparty.bindView
+import timber.log.Timber
 
 class ActionActivity : Activity() {
 
