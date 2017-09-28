@@ -3,6 +3,7 @@ package com.standoff.bang.bang
 import android.app.Application
 import com.standoff.bang.bang.model.*
 import com.standoff.bang.bang.network.BangNetwork
+import timber.log.Timber
 
 /**
  * Created by kelvinhanma on 9/28/17.
@@ -31,6 +32,8 @@ class BangApplication: Application() {
                 }
             }
         })
+
+        Timber.plant(Timber.DebugTree())
     }
 
     override fun onTerminate() {
