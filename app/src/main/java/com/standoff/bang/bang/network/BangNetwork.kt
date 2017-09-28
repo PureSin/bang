@@ -3,6 +3,7 @@ package com.standoff.bang.bang.network
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
 import com.standoff.bang.bang.model.Event
+import com.standoff.bang.bang.model.createDefaultPlayer
 import com.standoff.bang.bang.model.joinGame
 import com.standoff.bang.bang.model.startGame
 import io.reactivex.Observable
@@ -33,7 +34,7 @@ class BangNetwork {
 
     fun emit(event: Event) {
         when(event) {
-            joinGame -> ourSocket!!.emit("joinGame")
+            is joinGame -> ourSocket!!.emit("joinGame")
         }
     }
 
@@ -47,16 +48,10 @@ class BangNetwork {
 
     fun getEvents(): Observable<Event> {
         return Observable.create { e: ObservableEmitter<Event> ->
-
             ourSocket!!.on("startGame", { args ->
-                val event = convertToEvent(args)
-                e.onNext(event)
+                e.onNext(startGame(createDefaultPlayer("test")))
             })
         }
-    }
-
-    private fun convertToEvent(args: Array<out Any>?): Event {
-        return joinGame
     }
 
     fun isConnected(): Boolean {

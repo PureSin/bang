@@ -33,7 +33,7 @@ class WaitForPlayersActivity: Activity() {
         val network = (application as BangApplication).network
         network.socket().on(Socket.EVENT_CONNECT, {
             Timber.d("connected, joining game")
-            network.emit(joinGame)
+            network.emit(joinGame())
         })
         network.getEvents().subscribe { event ->
             when(event) {

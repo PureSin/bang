@@ -11,6 +11,6 @@ class startAction(val countdown: Int): ServerEvent()
 class roundResult(val yourAction: Action, val oppAction: Action, val player: Player, val opponent: Player, val score: Int): ServerEvent()
 
 open class ClientEvent: Event()
-object joinGame : ClientEvent()
+class joinGame : ClientEvent()
 class actionChosen(val playerId: String, val action: Action): ClientEvent()
 class userExit(val playerId: String): ClientEvent()
