@@ -3,6 +3,7 @@ package com.standoff.bang.bang
 import android.app.Application
 import com.standoff.bang.bang.model.*
 import com.standoff.bang.bang.network.BangNetwork
+import timber.log.Timber
 
 /**
  * Created by kelvinhanma on 9/28/17.
@@ -15,14 +16,14 @@ class BangApplication: Application() {
         super.onCreate()
         network = BangNetwork.getNetwork()
         network.getEvents().subscribe({ event ->
-            println("Got event: " + event)
+            Timber.d("Got event: " + event)
             when(event) {
-                is StartGame -> {
+                is startGame -> {
                     game = createDefaultGame()
                     game!!.opponent = event.opponent
                 }
-                is StartRound -> game!!.round = event.round
-                is RoundResult -> {
+                is startRound -> game!!.round = event.round
+                is roundResult -> {
                     game!!.player.lives = event.player.lives
                     game!!.player.bullets = event.player.bullets
                     game!!.opponent!!.lives = event.opponent.lives
