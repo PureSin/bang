@@ -31,7 +31,10 @@ class GameActivity : Activity(){
     val bullets: TextView? by bindView(R.id.bullets)
     val progressBar: ProgressBar? by bindView(R.id.timer)
     var action: GameAction? = null
+    var finalAction: Action? = null
     var timer: TimerWithProgressBar? = null
+
+
 
     var app:BangApplication? = null
 
@@ -64,6 +67,7 @@ class GameActivity : Activity(){
     }
 
     fun listenForResult() {
+
         app!!.network.getEvents().subscribe { event ->
             when(event) {
                 is roundResult -> showResult(event)
@@ -74,10 +78,10 @@ class GameActivity : Activity(){
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         action = MovementTracker.processEvent(event!!)
         if (action != null) {
-            if (action == GameAction.SHOOT && app!!.game!!.player.bullets == 0) {
-                Toast.makeText(this, "No bullets left.", Toast.LENGTH_SHORT)
-                return super.onTouchEvent(event)
-            }
+//            if (action == GameAction.SHOOT && app!!.game!!.player.bullets == 0) {
+//                Toast.makeText(this, "No bullets left.", Toast.LENGTH_SHORT)
+//                return super.onTouchEvent(event)
+//            }
 
 
             actionTextView!!.visibility = View.VISIBLE
@@ -95,7 +99,7 @@ class GameActivity : Activity(){
 
     fun playMove() {
         if (action != null) {
-            val finalAction = if (action == GameAction.SHOOT) {
+            var hAction = if (action == GameAction.SHOOT) {
                 Action.SHOOT
             } else if (action == GameAction.BLOCK){
                 Action.DEFEND
@@ -103,21 +107,21 @@ class GameActivity : Activity(){
                 Action.RELOAD
             }
 
-            app!!.network.emit(actionChosen(app!!.game!!.player.name, finalAction))
+//            app!!.network.emit(actionChosen(app!!.game!!.player.name, hAction))
+            finalAction = hAction
         }
     }
 
     fun showResult(result: roundResult) {
         if (app!!.game!!.player.lives == 0) {
             Toast.makeText(this, "Game over. Keep on practicing", Toast.LENGTH_LONG)
-
         }
 
 
         val outcome =
-                if (result.oppAction == Action.SHOOT && result.yourAction != Action.DEFEND) {
+                if (result.oppAction == Action.SHOOT && finalAction != Action.DEFEND) {
             "You got shot."
-        } else if (result.yourAction == Action.SHOOT && result.oppAction != Action.DEFEND) {
+        } else if (finalAction == Action.SHOOT && result.oppAction != Action.DEFEND) {
             "You shot your opponent."
         } else {
             "Everyone are alive :("

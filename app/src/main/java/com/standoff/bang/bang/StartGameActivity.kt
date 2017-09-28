@@ -19,7 +19,7 @@ class StartGameActivity: Activity() {
     }
 
     fun onClick() {
-        val i = Intent(this, WaitForPlayersActivity::class.java)
+        val i = Intent(this, GameActivity::class.java)
         startActivity(i)
         finish()
     }
