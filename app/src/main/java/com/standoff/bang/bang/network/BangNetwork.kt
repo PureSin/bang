@@ -52,9 +52,9 @@ class BangNetwork {
                 e.onNext(startRound(1))
             }).on("startAction", { args ->
                 e.onNext(startAction(Integer.parseInt(args[0] as String)))
-            }).on("roundResult", { args -> {
+            }).on("roundResult", { args ->
                 e.onNext(roundResult(Action.DEFEND, Action.RELOAD, createDefaultPlayer("a"), createDefaultPlayer("b"), 0))
-            }})
+            })
         }
     }
 
