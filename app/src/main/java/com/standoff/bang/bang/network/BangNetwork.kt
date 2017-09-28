@@ -53,7 +53,7 @@ class BangNetwork {
             }).on("startAction", { args ->
                 e.onNext(startAction(Integer.parseInt(args[0] as String)))
             }).on("roundResult", { args ->
-                e.onNext(roundResult(Action.DEFEND, Action.RELOAD, createDefaultPlayer("a"), createDefaultPlayer("b"), 0))
+                e.onNext(roundResult(Action.DEFEND, Action.DEFEND.getAction(), createDefaultPlayer("a"), createDefaultPlayer("b"), 0))
             })
         }
     }
