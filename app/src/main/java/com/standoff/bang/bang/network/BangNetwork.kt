@@ -49,7 +49,7 @@ class BangNetwork {
             ourSocket!!.on("startGame", { args ->
                 e.onNext(startGame(createDefaultPlayer("test")))
             }).on("startRound", { args ->
-                e.onNext(startRound(Integer.parseInt(args[0] as String)))
+                e.onNext(startRound(1))
             }).on("startAction", { args ->
                 e.onNext(startAction(Integer.parseInt(args[0] as String)))
             }).on("roundResult", { args -> {
