@@ -2,10 +2,7 @@ package com.standoff.bang.bang.network
 
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
-import com.standoff.bang.bang.model.Event
-import com.standoff.bang.bang.model.createDefaultPlayer
-import com.standoff.bang.bang.model.joinGame
-import com.standoff.bang.bang.model.startGame
+import com.standoff.bang.bang.model.*
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
@@ -50,7 +47,13 @@ class BangNetwork {
         return Observable.create { e: ObservableEmitter<Event> ->
             ourSocket!!.on("startGame", { args ->
                 e.onNext(startGame(createDefaultPlayer("test")))
-            })
+            }).on("startRound", { args ->
+                e.onNext(startRound(Integer.parseInt(args[0] as String)))
+            }).on("startAction", { args ->
+                e.onNext(startAction(Integer.parseInt(args[0] as String)))
+            }).on("roundResult", { args -> {
+                e.onNext(roundResult(Action.DEFEND, Action.RELOAD, createDefaultPlayer("a"), createDefaultPlayer("b"), 0))
+            }})
         }
     }
 
