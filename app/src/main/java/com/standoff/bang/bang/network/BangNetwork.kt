@@ -45,4 +45,8 @@ class BangNetwork {
 
     private fun emit() {
     }
+
+    fun isConnected(): Boolean {
+        return ourSocket!!.connected();
+    }
 }

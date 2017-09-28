@@ -12,6 +12,6 @@ class RoundResul(val yourAction: Action, val oppAction: Action): ServerEvent()
 class UpdateScore(val score: Int): ServerEvent()
 
 open class ClientEvent: Event()
-class JoinGame: ClientEvent()
+object JoinGame: ClientEvent()
 class ActionChosen(val playerId: String, val action: Action): ClientEvent()
 class UserExit(val playerId: String): ClientEvent()
