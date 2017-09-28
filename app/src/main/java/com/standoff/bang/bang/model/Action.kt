@@ -10,7 +10,7 @@ enum class Action {
     DEFEND,
     RELOAD,
     SHOOT,
-    NONE
+    NONE;
 
     fun ClosedRange<Int>.random() = Random().nextInt(endInclusive - start) +  start
 
