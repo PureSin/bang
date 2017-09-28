@@ -52,9 +52,9 @@ object MovementTracker {
         if (ratio > 0.5 && ratio < 1.5) {
             return GameAction.RELOAD
         } else if (ratio < 0.8) {
-            return GameAction.SHOOT
-        } else {
             return GameAction.BLOCK
+        } else {
+            return GameAction.SHOOT
         }
     }
 

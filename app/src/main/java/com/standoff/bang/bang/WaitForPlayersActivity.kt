@@ -14,6 +14,9 @@ import timber.log.Timber
  */
 
 class WaitForPlayersActivity: Activity() {
+    var starting = false
+    var joined = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,6 +27,7 @@ class WaitForPlayersActivity: Activity() {
     }
 
     fun launchPlayingScreen() {
+        starting = true
         startActivity(Intent(this, GameActivity::class.java))
         finish()
     }
@@ -33,11 +37,19 @@ class WaitForPlayersActivity: Activity() {
         val network = (application as BangApplication).network
         network.socket().on(Socket.EVENT_CONNECT, {
             Timber.d("connected, joining game")
-            network.emit(joinGame())
+            if (!joined) {
+                joined = true
+                network.emit(joinGame())
+            }
         })
         network.getEvents().subscribe { event ->
             when(event) {
-                is startGame -> launchPlayingScreen()
+                is startGame -> {
+                    Timber.d("Received start game event")
+                    if (!starting) {
+                        launchPlayingScreen()
+                    }
+                }
             }
         }
         network.connect()
