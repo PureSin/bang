@@ -9,7 +9,6 @@ class StartGame(val opponent: Player): ServerEvent()
 class StartRound(val round: Int): ServerEvent()
 class StartAction(val countdown: Int): ServerEvent()
 class RoundResult(val yourAction: Action, val oppAction: Action, val player: Player, val opponent: Player, val score: Int): ServerEvent()
-class UpdateScore(val score: Int): ServerEvent()
 
 open class ClientEvent: Event()
 object JoinGame: ClientEvent()

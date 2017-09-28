@@ -1,8 +1,7 @@
 package com.standoff.bang.bang
 
 import android.app.Application
-import com.standoff.bang.bang.model.Game
-import com.standoff.bang.bang.model.StartGame
+import com.standoff.bang.bang.model.*
 import com.standoff.bang.bang.network.BangNetwork
 
 /**
@@ -19,6 +18,16 @@ class BangApplication: Application() {
             println("Got event: " + event)
             when(event) {
                 is StartGame -> {
+                    game = createDefaultGame()
+                    game!!.opponent = event.opponent
+                }
+                is StartRound -> game!!.round = event.round
+                is RoundResult -> {
+                    game!!.player.lives = event.player.lives
+                    game!!.player.bullets = event.player.bullets
+                    game!!.opponent!!.lives = event.opponent.lives
+                    game!!.opponent!!.bullets = event.opponent.bullets
+                    game!!.score = event.score
                 }
             }
         })

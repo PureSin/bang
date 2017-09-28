@@ -5,3 +5,6 @@ package com.standoff.bang.bang.model
  */
 data class Player(val name: String, var lives: Int, var bullets: Int)
 
+fun createDefaultPlayer(name: String): Player {
+    return Player(name, 0, 0)
+}

@@ -1,17 +1,11 @@
 package com.standoff.bang.bang.network
 
-import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
 import com.standoff.bang.bang.model.Event
 import com.standoff.bang.bang.model.JoinGame
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.subscribers.DefaultSubscriber
-import org.json.JSONObject
-import org.reactivestreams.Subscriber
-import java.util.*
 
 
 /**
@@ -19,7 +13,7 @@ import java.util.*
  */
 class BangNetwork {
     companion object {
-        val SOCKET_URL: String = "http://100.119.18.110:3000/"
+        val SOCKET_URL: String = "https://hackathon-standoff.herokuapp.com/"
         private var ourInstance: BangNetwork? = null
         private var ourSocket: Socket? = null
 
