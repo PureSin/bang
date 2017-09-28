@@ -6,5 +6,6 @@ package com.standoff.bang.bang.model
 enum class Action {
     DEFEND,
     RELOAD,
-    SHOOT
+    SHOOT,
+    NONE
 }
