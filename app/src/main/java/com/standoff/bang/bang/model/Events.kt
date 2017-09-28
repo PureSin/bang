@@ -5,10 +5,10 @@ package com.standoff.bang.bang.model
  */
 sealed class Event
 open class ServerEvent: Event()
-class StartGame(val player: Player): ServerEvent()
+class StartGame(val opponent: Player): ServerEvent()
 class StartRound(val round: Int): ServerEvent()
 class StartAction(val countdown: Int): ServerEvent()
-class RoundResul(val yourAction: Action, val oppAction: Action): ServerEvent()
+class RoundResult(val yourAction: Action, val oppAction: Action, val player: Player, val opponent: Player, val score: Int): ServerEvent()
 class UpdateScore(val score: Int): ServerEvent()
 
 open class ClientEvent: Event()
