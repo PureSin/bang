@@ -11,15 +11,16 @@
         android:supportsRtl="true"
         android:name=".BangApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".StartGameActivity">
+        <activity android:name=".StartGameActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WaitForPlayersActivity" />
-        <activity android:name=".GameActivity" />
+        <activity android:name=".WaitForPlayersActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".GameActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

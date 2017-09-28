@@ -2,7 +2,6 @@ package com.standoff.bang.bang.moves
 
 import android.content.res.Resources
 import android.graphics.Point
-import android.util.DisplayMetrics
 import android.view.MotionEvent
 import timber.log.Timber
 
@@ -78,8 +77,8 @@ object MovementTracker {
     }
 }
 
-enum class GameAction {
-    SHOOT,
-    BLOCK,
-    RELOAD,
+enum class GameAction(name: String) {
+    SHOOT("Shoot"),
+    BLOCK("Block"),
+    RELOAD("Reload"),
 }

@@ -32,6 +32,8 @@ class BangApplication: Application() {
                 }
             }
         })
+
+        Timber.plant(Timber.DebugTree())
     }
 
     override fun onTerminate() {
